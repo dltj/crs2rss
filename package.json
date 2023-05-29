@@ -1,5 +1,13 @@
 {
-  "dependencies": {
+  "name": "crs-to-rss",
+  "version": "1.0.0",
+  "description": "Reformat recent publications from the Congressional Research Service into an Atom feed",
+  "author": "Peter Murray <jester@dltj.org>",
+  "license": "Apache 2.0",
+  "devDependencies": {
     "serverless-python-requirements": "^6.0.0"
+  },
+  "dependencies": {
+    "serverless": "^3.31.0"
   }
 }

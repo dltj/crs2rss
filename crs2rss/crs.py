@@ -5,8 +5,8 @@ from random import randint
 from typing import List
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 logger = logging.getLogger()
 
@@ -61,21 +61,21 @@ class CrsReport:
         self.id = f"https://crsreports.congress.gov/product/pdf/{self.product_type_code}/{self.report_id}/{self.current_seq_number}"
 
 
-def get_latest_crs_entries() -> List[CrsReport]:
-    options = FirefoxOptions()
-    options.add_argument("--headless")
-    driver = webdriver.Firefox(options=options)
-
+def get_latest_crs_entries(selenium_driver: webdriver) -> List[CrsReport]:
     reports = []
     for url in [URL, URL + "&pageNumber=2", URL + "&pageNumber=3"]:
-        driver.get(url)
+        selenium_driver.get(url)
 
         # The Selenium driver contains the entire chome surrounding the HTTP response. In this case,
         # the response from crsreports.congress.gov is a JSON document, and the chrome contains
         # a `<div id="json">` element with the response data.
-        body = driver.find_element(By.ID, "json")
         try:
+            body = selenium_driver.find_element(By.ID, "json")
             response_doc = json.loads(body.text)
+        except NoSuchElementException as ex:
+            logger.critical("Couldn't find JSON: %s", ex)
+            logger.info("Returned HTTP body: %s", selenium_driver.page_source)
+            return
         except json.JSONDecodeError as ex:
             logger.warning("bad payload: %s", ex)
             return

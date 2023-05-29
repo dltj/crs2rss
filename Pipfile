@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 click = "*"
-beautifulsoup4 = "*"
 requests = "*"
 selenium = "*"
 jinja2 = "*"
+urllib3 = "<2.0"
 
 [dev-packages]
 black = "*"
@@ -16,4 +16,4 @@ pylint = "*"
 nodeenv = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.8"

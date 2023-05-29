@@ -1,0 +1,40 @@
+service: crs-to-rss
+
+frameworkVersion: '3'
+configValidationMode: error
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  genRss:
+    handler: crs2rss.aws.genRss
+    layers: 
+      - arn:aws:lambda:us-east-1:202092910073:layer:HeadlessChromium:1
+    events:
+      # Invoke Lambda function every 2nd minute from Mon-Fri
+      - schedule: cron(0/20 * ? * MON-FRI *)
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    zip: false
+
+package:
+  patterns:
+    - '!.vscode'
+    - '!crs2rss.egg-info'
+    - '!node_modules'
+    - '!geckodirver.log'
+  # include:
+  #   # - something
+  # exclude:
+  #   - node_modules/**
+  #   - .venv/**
+  #   - "*/__pycache__"
+  #   - "*egg-info"
+  #   - config.yml
+  #   - geckodriver.log
