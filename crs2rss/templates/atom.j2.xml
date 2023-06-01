@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Congressional Research Service Reports</title>
-  <link rel="self" href="https://feeds.dltj.org/crs-feed.xml" />
+  <generator uri="https://github.com/dltj/crs2rss" version="0.1">crs2rss</generator>
+  <link rel="self" href="https://feeds.dltj.org/crs.xml" />
   <link
     rel="related" href="https://dltj.org/article/crs-feed/"
     title="About the software generating this Atom feed." />
+  <link href="https://crsreports.congress.gov/" rel="alternate" type="text/html" />
   <updated>{{ timestamp }}</updated>
   <author>
     <name>Peter Murray</name>
@@ -15,7 +17,7 @@
     <uri>https://crsreports.congress.gov/</uri>
   </author>
   <id>urn:uuid:eaaf6e23-1b37-48d0-9923-0e893fceabd8</id>
-  {% for entry in reports if not entry.product_type_code=="WA" %}
+  {% for entry in reports %}
   <entry>
     <title>{{ entry.title }}</title>
     <author>

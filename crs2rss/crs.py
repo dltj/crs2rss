@@ -35,6 +35,26 @@ URL = f"https://crsreports.congress.gov/search/results?term=&r={randint(10000000
 
 @dataclass
 class CrsReport:
+    """This is a report from the Congressional Research Service.
+
+    Attributes marked with * are as-supplied from the CRS feed.
+
+    Attributes:
+        title (str): The report title *
+        pub_date (str): The report publication date (as sent by CRS) *
+        author (str): Concatination of report authors
+        report_id (str): CRS-assigned report identifier *
+        product_type_code (str): CRS report type *
+        icon_name (str): Report type icon *
+        number_of_pages (str): Number of pages *
+        has_previous_ver_str (str): Encoded list of previous versions *
+        current_seq_number (str): Sequence number of this report within the report_id series *
+        url (str): URL the latest report in a report sequence
+        has_previous_version (bool): Computed boolean of whether this is the first report in a sequence
+        ordinal_seq_number (str): An ordinal display of the current_seq_number
+        id (str): URL of this specific report in a sequence; can be used as a unique identifier
+    """
+
     title: str
     pub_date: str
     author: str
@@ -63,7 +83,8 @@ class CrsReport:
 
 def get_latest_crs_entries(selenium_driver: webdriver) -> List[CrsReport]:
     reports = []
-    for url in [URL, URL + "&pageNumber=2", URL + "&pageNumber=3"]:
+    urls = [URL, URL + "&pageNumber=2", URL + "&pageNumber=3"]
+    for url in urls:
         selenium_driver.get(url)
 
         # The Selenium driver contains the entire chome surrounding the HTTP response. In this case,
@@ -81,6 +102,8 @@ def get_latest_crs_entries(selenium_driver: webdriver) -> List[CrsReport]:
             return
 
         for entry in response_doc["SearchResults"]:
+            if "ProductTypeCode" in entry and entry["ProductTypeCode"] == "WA":
+                next
             report = CrsReport(
                 entry["Title"],
                 entry["CoverDate"],
@@ -94,4 +117,4 @@ def get_latest_crs_entries(selenium_driver: webdriver) -> List[CrsReport]:
             )
             reports.append(report)
 
-        return reports
+    return reports

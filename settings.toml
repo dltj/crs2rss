@@ -1,0 +1,6 @@
+key="value"
+
+[aws]
+bucket_name = "feeds.dltj.org"
+file_name = "crs.xml"
+distribution_id = "ESIBEQNVGYCTW"
