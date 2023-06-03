@@ -6,7 +6,7 @@
         <string>org.dltj.crs2rss</string>
         <key>ProgramArguments</key>
         <array>
-            <string>/usr/local/bin/pipenv</string>
+            <string>/Users/peter/.local/bin/pipenv</string>
             <string>run</string>
             <string>crs2rss</string>
         </array>
